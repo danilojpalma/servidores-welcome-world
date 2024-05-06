@@ -14,7 +14,7 @@ router.get('/create', (req, res) => {
     const month = date.getMonth();
     const year = date.getFullYear();
 
-    fs.writeFile(`./files/${createFileName}`, `${day<10 ? '0'+day : day }/${month<10 ? '0'+month : month}/${year} - ${content}`)
+    fs.writeFile(`./files/${createFileName}`, `${day<10 ? '0'+ day : day }/${month<10 ? '0'+ month : month}/${year} - ${content}`)
         .then(() => {
             res.send('File created');
         })
@@ -29,6 +29,29 @@ router.get('/read', (req, res) => {
     fs.readFile(`./files/${nameReadFile}`, 'utf-8')
         .then((data) => {
             res.send(data);
+        })
+        .catch((err) => {
+            res.send(err);
+        });
+});
+
+router.get('/update', (req, res) => {
+    const { currentName, newName } = req.query;
+
+    fs.rename(`./files/${currentName}`, `./files/${newName}`)
+        .then(() => {
+            res.send('File updated');
+        })
+        .catch((err) => {
+            res.send(err);
+        });
+});
+
+router.get('/delete', (req, res) => {
+    const { deleteFileName } = req.query;
+    fs.unlink(`./files/${deleteFileName}`)
+        .then(() => {
+            res.send('File deleted');
         })
         .catch((err) => {
             res.send(err);
