@@ -1,10 +1,13 @@
 import express from 'express';
 import fs from 'fs/promises';
+import path from 'path';
+
+const __dirname = path.resolve();
 const router = express.Router();
 
 
 router.get('/', (req, res) => {
-    res.sendFile('/views/index.html', { root: '.' });
+    res.sendFile(path.join(__dirname, '/views/index.html'));
 });
 
 router.get('/create', (req, res) => {
